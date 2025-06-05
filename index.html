@@ -343,8 +343,8 @@
     <script>
         // Configuración de la API
         const API_CONFIG = {
-            baseUrl: 'https://api.registradores.org/v1',
-            apiKey: 'YOUR_API_KEY', // Necesitarás obtener una API key
+            baseUrl: 'https://api.goolzoom.com/v1',
+            apiKey: 'VLo1poQiPk4UpKM4kzZHj3W4HtKuV9zM3Vky0tqZ',
             endpoints: {
                 propertySearch: '/properties/search',
                 propertyDetails: '/properties/details'
@@ -358,7 +358,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${API_CONFIG.apiKey}`
+                        'X-API-Key': API_CONFIG.apiKey
                     },
                     body: JSON.stringify({
                         location: searchParams.location,
@@ -370,13 +370,14 @@
                         },
                         filters: {
                             city: 'Málaga',
-                            transactionType: 'sale'
+                            transactionType: 'sale',
+                            source: 'goolzoom'
                         }
                     })
                 });
 
                 if (!response.ok) {
-                    throw new Error('Error en la conexión con la API');
+                    throw new Error('Error en la conexión con la API de Goolzoom');
                 }
 
                 return await response.json();
@@ -391,12 +392,12 @@
             try {
                 const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.propertyDetails}/${propertyId}`, {
                     headers: {
-                        'Authorization': `Bearer ${API_CONFIG.apiKey}`
+                        'X-API-Key': API_CONFIG.apiKey
                     }
                 });
 
                 if (!response.ok) {
-                    throw new Error('Error al obtener detalles de la propiedad');
+                    throw new Error('Error al obtener detalles de la propiedad de Goolzoom');
                 }
 
                 return await response.json();
