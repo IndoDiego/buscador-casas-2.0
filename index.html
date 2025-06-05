@@ -313,6 +313,7 @@
                 </div>
                 
                 <button type="submit" class="search-btn">🔍 Buscar Ventas</button>
+                <button type="button" class="search-btn" id="testApiBtn" style="background: #28a745;">🧪 Probar API</button>
             </form>
         </div>
 
@@ -586,6 +587,41 @@
                 this.placeholder = 'Prueba: Larios, Alcazabilla, Farola, Trinidad...';
             }
         });
+
+        // Función para probar la conexión con la API
+        async function testApiConnection() {
+            const testBtn = document.getElementById('testApiBtn');
+            const originalText = testBtn.textContent;
+            
+            try {
+                testBtn.textContent = 'Probando conexión...';
+                testBtn.disabled = true;
+                
+                const testParams = {
+                    location: '29001 Málaga',
+                    address: 'Calle Larios',
+                    propertyType: 'piso'
+                };
+                
+                const results = await fetchPropertyData(testParams);
+                
+                if (results && results.properties) {
+                    alert('✅ Conexión exitosa con la API de Goolzoom\nSe encontraron ' + results.properties.length + ' propiedades');
+                    console.log('Datos de prueba:', results);
+                } else {
+                    throw new Error('No se recibieron datos válidos de la API');
+                }
+            } catch (error) {
+                alert('❌ Error en la conexión con la API: ' + error.message);
+                console.error('Error de prueba:', error);
+            } finally {
+                testBtn.textContent = originalText;
+                testBtn.disabled = false;
+            }
+        }
+
+        // Agregar evento al botón de prueba
+        document.getElementById('testApiBtn').addEventListener('click', testApiConnection);
     </script>
 </body>
 </html>
